@@ -1,0 +1,55 @@
+.decor-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.decor-hero img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+}
+
+/* TEXT OVERLAY */
+.decor-overlay {
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  transform: translateY(-50%);
+  max-width: 420px;
+}
+
+/* HEADING */
+.decor-overlay h2 {
+  font-size: 48px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 18px;
+  font-family: 'Playfair Display', serif;
+}
+
+/* SUBTEXT */
+.decor-overlay p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+
+.decor-overlay .decor-btn {
+  display: inline-block;
+  color: #fff;
+  padding: 12px 36px;
+  border-radius: 50px;
+  background: #2f4f44; 
+  border: 1px solid #2f4f44;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.decor-overlay .decor-btn:hover {
+  background: #1f6a50;
+}
+
+    

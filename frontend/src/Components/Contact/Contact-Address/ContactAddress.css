@@ -1,0 +1,20 @@
+.info-card{
+  margin: 100px 0;
+  background:#fff;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  text-align:center;
+}
+.info-card i{
+  font-size:28px;
+  color:#c9a27e;
+  margin-bottom:10px;
+}
+
+@media (max-width: 576px) {
+  .info-card {
+    width: 200px;
+    margin: 30px auto;
+  }
+}

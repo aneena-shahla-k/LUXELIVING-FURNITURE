@@ -1,0 +1,292 @@
+/* --- Premium Editorial Layout Base --- */
+.stl-premium-wrapper {
+  margin-top: 80px;
+  padding: 40px 0 80px;
+  background-color: #ffffff; /* Clean White Canvas */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #111111;
+}
+
+/* --- Header System --- */
+.stl-header-block {
+  text-align: center;
+  margin-bottom: 48px;
+  padding: 0 24px;
+}
+
+.stl-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #8c8c8c;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.stl-main-title {
+  font-size: 40px;
+  font-weight: 300;
+  color: #111111;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.stl-divider {
+  width: 50px;
+  height: 1px;
+  background-color: #3d5d50;
+  margin: 24px auto 0;
+  opacity: 0.7;
+}
+
+/* --- Premium Landscape Billboard Banner --- */
+.stl-hero-container {
+  width: 100%;
+  max-width: 1320px; /* Luxury wide-screen framing */
+  margin: 0 auto 64px;
+  padding: 0 24px;
+}
+
+.stl-main-billboard {
+  width: 100%;
+  height: 520px; 
+    object-fit: cover; 
+    object-position: center 35%; 
+  
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Content Wrapper --- */
+.stl-content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.stl-section-meta {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.stl-section-meta h2 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #111111;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.stl-section-meta p {
+  font-size: 14px;
+  color: #777777;
+  margin-top: 8px;
+  font-weight: 300;
+}
+
+/* --- Modern Interactive Cards Grid --- */
+.stl-modern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px;
+}
+
+.stl-luxury-card {
+  background: #ffffff;
+  border: 1px solid #efefef;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card Active / Selected State Styling */
+.stl-luxury-card.active {
+  border-color: #3d5d50;
+  box-shadow: 0 20px 40px rgba(61, 93, 80, 0.06);
+  background: #ffffff;
+}
+
+.stl-luxury-card.inactive {
+  opacity: 0.55;
+  border-color: #f5f5f5;
+  background: #fafafa;
+  transform: scale(0.98);
+}
+
+/* Minimal Checkbox Overwrite */
+.stl-card-checkbox-wrapper {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 5;
+}
+
+.stl-custom-checkbox {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 50%; /* Circle look is more premium than square boxes */
+  outline: none;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.stl-custom-checkbox:checked {
+  background-color: #3d5d50;
+  border-color: #3d5d50;
+}
+
+.stl-custom-checkbox:checked::before {
+  content: "✓";
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Product Card Images */
+.stl-image-frame {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  background: #fdfdfd;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stl-image-frame img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stl-luxury-card.active:hover .stl-image-frame img {
+  transform: scale(1.05);
+}
+
+/* Product Titles & Pricing */
+.stl-card-details {
+  text-align: center;
+  padding-top: 4px;
+}
+
+.stl-card-details h3 {
+  font-size: 15px;
+  font-weight: 400;
+  color: #222222;
+  margin: 0 0 8px;
+  letter-spacing: -0.1px;
+}
+
+.stl-card-price {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d5d50;
+  margin: 0;
+}
+
+/* --- Sticky Bottom Aggregate Total Bar --- */
+.stl-sticky-checkout-bar {
+  background: #ffffff;
+  border: 1px solid #eaeaea;
+  padding: 24px 48px;
+  border-radius: 100px; /* Capsule premium shape */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 64px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.04);
+}
+
+.stl-bar-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stl-bar-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #8a8a8a;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+}
+
+.stl-bar-total {
+  font-size: 28px;
+  font-weight: 500;
+  color: #111111;
+  margin: 2px 0 0;
+  letter-spacing: -0.5px;
+}
+
+.stl-btn-submit {
+  background: #3d5d50;
+  color: #ffffff;
+  border: none;
+  padding: 16px 40px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.stl-btn-submit:hover {
+  background: #2b4239;
+  box-shadow: 0 10px 20px rgba(61, 93, 80, 0.15);
+}
+
+/* --- Back To Collection Nav --- */
+.stl-footer-navigation {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.stl-link-back-nav {
+  font-size: 14px;
+  color: #8a8a8a;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.stl-link-back-nav:hover {
+  color: #3d5d50;
+}
+
+/* --- Responsive Layout Rules --- */
+@media (max-width: 992px) {
+  .stl-main-billboard {
+    height: 400px;
+  }
+  .stl-sticky-checkout-bar {
+    border-radius: 20px;
+    padding: 20px 32px;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  .stl-btn-submit {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .stl-main-billboard {
+    height: 260px;
+  }
+  .stl-main-title {
+    font-size: 28px;
+  }
+}

@@ -1,0 +1,85 @@
+.room-section{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding: 60px 0;
+    overflow: hidden;
+    }
+.glass-card {
+  max-width: 320px;
+  height: auto;
+  max-height: 400px;
+  aspect-ratio: 3 / 4;
+  margin: auto;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+
+}
+
+.glass-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+.card-content {
+  position: absolute;
+  font-weight: 600;
+  color: #1e1e1e;
+  inset: 0;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.line{
+  letter-spacing: 4px;
+}
+.btn-view {
+  background: #355f52;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+
+  display: inline-block; /* 🔑 */
+  height: auto;          /* 🔑 */
+  width: auto;
+}
+
+.btn-view:hover {
+  background: #2c4f45;
+  color: #fff;
+}
+
+
+@media (max-width: 768px) {
+  .glass-card:hover {
+    transform: none;
+  }
+
+  .section-title {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .d-flex.m-5 {
+    margin: 2rem 0 !important;
+  }
+  .room-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}

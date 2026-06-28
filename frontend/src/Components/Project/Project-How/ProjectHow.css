@@ -1,0 +1,22 @@
+.how-we-work {
+  background: #f7f5f3;
+}
+
+.process-card {
+  background: #fff;
+  padding: 35px 25px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.process-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.step-number {
+  display: inline-block;
+  font-size: 32px;
+  font-weight: 700;
+  color: #c2a27d;
+}

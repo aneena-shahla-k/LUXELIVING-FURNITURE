@@ -1,0 +1,162 @@
+.decor-page {
+  padding: 150px 6%;
+  background: #f8f8f6;
+  min-height: 100vh;
+}
+
+
+/* HEADER */
+.decor-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.decor-header h1 {
+  font-size: 3rem;
+  color: #1f1f1f;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.decor-header p {
+  color: #777;
+  font-size: 1.1rem;
+}
+
+
+/* GRID */
+.decor-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+
+/* CARD */
+.decor-card {
+  width: 400px;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: 0.4s ease;
+}
+
+.decor-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+
+/* IMAGE */
+.decor-image-wrapper {
+  overflow: hidden;
+  height: 250px;
+}
+
+.decor-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  transition: 0.5s ease;
+}
+
+.decor-card:hover img {
+  transform: scale(1.05);
+}
+
+
+/* CONTENT */
+.decor-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.decor-content h2 {
+  font-size: 25px;
+  font-weight: bolder;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+
+/* LIST */
+.decor-content ul {
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto 20px;
+  padding-left: 0;
+  text-align: left;
+  list-style-position: inside;
+}
+
+.decor-content li {
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 1rem;
+}
+
+
+
+/* BUTTON */
+.shop-decor-btn {
+  background: #f8faf9;
+  color: rgb(0, 0, 0);
+  border-style: solid;  /* <--- Add this */
+  border-width: 1px;    /* <--- Add this to set thickness */
+  border-color: #000000;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.shop-decor-btn:hover {
+  background: #000000;
+  color: #f8f8f6;
+  transform: scale(1.05);
+}
+
+.back-collection-btn{
+  display: inline-block;
+  color: white;
+  padding: 12px 36px;
+  border-radius: 50px;
+  background: #2f4f44; 
+  border: 1px solid #2f4f44;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.back-collection-btn:hover{
+  background: #1f6a50;
+  color: white;
+}
+
+
+/* RESPONSIVE */
+
+  @media(max-width:768px){
+
+  .decor-page{
+    padding: 120px 20px 60px;
+  }
+
+  .decor-header h1{
+    font-size: 2.2rem;
+    line-height: 1.2;
+  }
+
+  .decor-content h2{
+    font-size: 1.8rem;
+    line-height: 1.3;
+    word-break: break-word;
+  }
+
+}

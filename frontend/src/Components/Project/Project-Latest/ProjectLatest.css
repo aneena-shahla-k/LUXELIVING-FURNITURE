@@ -1,0 +1,42 @@
+.projects-section {
+  background: #ffffff;
+}
+
+.project-images {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.project-images img {
+  width: 260px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.project-link {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #000;
+  padding-bottom: 2px;
+}
+
+.project-link:hover {
+  color: #c2a27d;
+  border-color: #c2a27d;
+}
+
+@media (max-width: 576px) {
+  .project-images {
+    justify-content: center;
+  }
+
+  .project-images img {
+    width: 90%;
+    
+  }
+}

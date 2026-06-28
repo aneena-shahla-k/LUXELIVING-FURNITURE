@@ -1,0 +1,328 @@
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#f5f5f5;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.shop-look-section{
+  min-height:100vh;
+  background:#f5f5f5;
+  padding:140px 6% 60px;
+}
+
+/* TITLE */
+.look-page-title{
+  text-align:center;
+  font-size:39px;
+  font-weight:800;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color:#222;
+  margin-bottom:40px;
+}
+
+
+/* MAIN CONTAINER */
+.shop-container{
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  gap:35px;
+  flex-wrap:wrap;
+}
+
+
+/* LEFT IMAGE */
+.image-section{
+  flex:1;
+  min-width:300px;
+}
+
+
+.main-image{
+  width:100%;
+  height:100%;
+  max-height:515px;
+  object-fit:cover;
+  border-radius:24px;
+  display:block;
+  transition:0.4s ease;
+}
+
+
+.main-image:hover{
+
+  transform:scale(1.01);
+}
+
+
+/* RIGHT PANEL */
+.look-panel{
+  width:520px;
+  background:white;
+  padding:28px;
+  border-radius:24px;
+  box-shadow:
+    0 5px 20px rgba(0,0,0,0.05);
+}
+
+
+/* PANEL TITLE */
+.look-panel h2{
+  font-size:28px;
+  font-weight:700;
+  color:#222;
+  margin-bottom:25px;
+}
+
+
+/* PRODUCT LIST */
+.product-list{
+  display:flex;
+  flex-direction:column;
+}
+
+
+/* PRODUCT ITEM */
+.look-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom: 1px solid #ececec;
+  transition:0.3s ease;
+}
+
+
+/* LEFT SIDE */
+.item-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+
+/* CHECKBOX */
+.look-item input[type="checkbox"]{
+  width:18px;
+  height:18px;
+  accent-color:#486b57;
+  cursor:pointer;
+}
+
+
+/* PRODUCT IMAGE */
+.look-item img{
+  width:58px;
+  height:50px;
+  border-radius:12px;
+  object-fit:cover;
+}
+
+
+/* PRODUCT NAME */
+.item-left p{
+  font-size:16px;
+  font-weight:500;
+  color:#222;
+}
+
+
+/* PRICE */
+.look-item span{
+  font-size:17px;
+  font-weight:600;
+  color:#333;
+}
+
+
+/* TOTAL SECTION */
+.total-box{
+  margin-top:15px;
+}
+
+
+.total-box h3{
+  text-align:right;
+  margin-bottom:18px;
+  font-size:24px;
+  font-weight:700;
+  color:#222;
+}
+
+
+/* BUTTON */
+.cart-btn{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:16px;
+  background:#1f2430;
+  color:white;
+  font-size:18px;
+  font-weight:500;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+
+
+.cart-btn:hover{
+  background:#f3f5f4;
+  color:black;
+  border:1px solid black;
+}
+
+
+/* BACK BUTTON */
+.back-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-top:50px;
+}
+
+
+.back-btn{
+  text-decoration:none;
+  background:#486b57;
+  color:white;
+  padding:13px 30px;
+  border-radius:40px;
+  font-size:18px;
+  transition:0.3s ease;
+}
+
+
+.back-btn:hover{
+  background:#2f4f44;
+  color:white;
+}
+
+
+/* LOADING */
+.loading-wrapper{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+
+/* TABLET */
+@media(max-width:992px){
+  .look-panel{
+    width:100%;
+  }
+
+  .main-image{
+    max-height:500px;
+  }
+}
+
+
+/* MOBILE */
+@media(max-width:768px){
+  .shop-look-section{
+    padding:110px 20px 50px;
+  }
+
+  .shop-container{
+    flex-direction:column;
+  }
+
+  .look-page-title{
+    font-size:32px;
+    margin-bottom:30px;
+  }
+
+  .main-image{
+    height:350px;
+  }
+
+  .look-panel{
+    padding:22px;
+  }
+
+  .look-panel h2{
+    font-size:24px;
+  }
+
+  .look-item img{
+    width:52px;
+    height:52px;
+  }
+
+  .item-left p{
+    font-size:15px;
+  }
+
+  .look-item span{
+    font-size:15px;
+  }
+
+  .total-box h3{
+    font-size:22px;
+  }
+
+  .cart-btn{
+    font-size:16px;
+  }
+
+  .back-btn{
+    font-size:16px;
+  }
+}
+
+
+/* SMALL MOBILE */
+@media(max-width:480px){
+  .shop-look-section{
+    padding:100px 15px 40px;
+  }
+
+  .look-page-title{
+    font-size:28px;
+  }
+
+  .main-image{
+    height:300px;
+    border-radius:18px;
+  }
+
+  .look-panel{
+    border-radius:18px;
+    padding:18px;
+  }
+
+  .look-item{
+    gap:10px;
+  }
+
+  .item-left{
+    gap:8px;
+  }
+
+  .look-item img{
+    width:45px;
+    height:45px;
+  }
+
+  .item-left p{
+    font-size:14px;
+  }
+
+  .look-item span{
+    font-size:14px;
+  }
+
+  .total-box h3{
+    font-size:20px;
+  }
+
+  .cart-btn{
+    border-radius:12px;
+  }
+}

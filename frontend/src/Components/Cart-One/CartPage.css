@@ -1,0 +1,19 @@
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.input-group span.form-control {
+  font-weight: 500;
+  color: #212529;
+}
+
+.input-group .btn {
+  background-color: transparent;
+  color: #3b5d50;
+  border-color: #3b5d50;
+}
+
+.input-group .btn:hover {
+  background-color: #3b5d50;
+  color: #fff;
+}

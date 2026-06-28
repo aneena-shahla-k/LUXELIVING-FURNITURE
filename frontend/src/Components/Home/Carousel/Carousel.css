@@ -1,0 +1,100 @@
+
+   .hero {
+            background-color: #3d5d50;
+            padding: 100px 0 120px 0;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+    .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+  
+    .hero p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+            max-width: 450px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+.carousel-control-prev-icon, .carousel-control-next-icon{
+  margin-top: 100px;
+}
+
+
+/* Carousel image */
+.hero-img {
+  margin-top: 100px;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+/* ================= TABLET ================= */
+@media (max-width: 992px) {
+  .hero {
+    padding: 60px 0;
+    min-height: 100vh;
+  }
+
+  .hero h1 {
+    font-size: 2.6rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .hero-img {
+    height: 300px;
+  }
+}
+
+/* ================= TABLET & MOBILE ================= */
+@media (max-width: 992px) {
+  .hero {
+    /* REMOVE min-height: 100vh; */
+    min-height: 50vh; 
+    padding: 40px 0; /* Reduced padding top and bottom */
+  }
+
+  .hero h1 {
+    font-size: 2.4rem;
+    margin-top: 100px !important; /* Overrides pt-5 mt-5 on mobile */
+    padding-top: 20px !important;
+    text-align: center;
+  }
+
+  .hero p {
+    margin-bottom: 30px; /* Space between text and carousel */
+  }
+
+  .hero-img {
+    margin-top: 0; /* REMOVE the 100px margin entirely */
+    height: auto;   /* Let the image define its own height */
+    max-height: 350px; 
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: 70px;
+  }
+
+  /* Fix the carousel arrow icons so they aren't offset by 100px */
+  .carousel-control-prev-icon, 
+  .carousel-control-next-icon {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-img {
+    max-height: 250px; /* Smaller cap for mobile phones */
+  }
+}
