@@ -173,6 +173,9 @@ export default function AdminViewShopLook() {
       setRoomTypes(rooms);
     } catch { showToast("error","Could not reach server."); }
   };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => { fetchLooks(); }, []);
 
   useEffect(() => {

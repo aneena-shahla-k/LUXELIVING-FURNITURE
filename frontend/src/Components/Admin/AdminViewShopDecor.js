@@ -169,7 +169,7 @@ export default function AdminViewShopDecor() {
       showToast("error", "Could not reach server components.");
     }
   };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchCategories(); }, []);
 
   useEffect(() => {

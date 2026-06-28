@@ -10,7 +10,7 @@ import {
 const AdminLayout = () => {
   const location = useLocation();
   const [isManageOpen, setIsManageOpen] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen] = useState(false);
 
   const subNav = [
     { name: 'Products',          icon: <Package size={15} />,    path: '/admin/add-product' },
