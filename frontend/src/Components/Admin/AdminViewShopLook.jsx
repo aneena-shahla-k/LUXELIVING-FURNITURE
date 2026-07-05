@@ -175,8 +175,9 @@ export default function AdminViewShopLook() {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  useEffect(() => { fetchLooks(); }, []);
+  useEffect(() => { 
+    fetchLooks();
+   }, []);
 
   useEffect(() => {
     if (roomFilter === "all") setFiltered(looks);
