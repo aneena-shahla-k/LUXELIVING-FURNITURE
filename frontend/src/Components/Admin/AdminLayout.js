@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import {
   Package, ShoppingBag, Palette, FileImage,
   LogOut, Bell, ChevronDown, ChevronUp,
   Settings, LayoutDashboard, Users,
-  ShoppingCart
+  ShoppingCart, Menu, X
 } from 'lucide-react';
 
 const AdminLayout = () => {
   const location = useLocation();
   const [isManageOpen, setIsManageOpen] = useState(true);
-  const [isSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  // Initial loading window detection to adjust initial state cleanly
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setIsSidebarOpen(false);
+    }
+  }, []);
+
+  // Close menu on mobile path change
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setIsSidebarOpen(false);
+    }
+  }, [location.pathname]);
 
   const subNav = [
     { name: 'Products',          icon: <Package size={15} />,    path: '/admin/add-product' },
@@ -35,19 +49,16 @@ const AdminLayout = () => {
           --accent:#4f7eff;
           --accent-s:rgba(79,126,255,.13);
           --accent-g:rgba(79,126,255,.22);
-          --gold:#c9a84c;
           --text:#dde6f5;
           --sub:#6b82a8;
           --muted:#2c3d5c;
-          --success:#20c97a;
-          --warn:#f5a623;
           --danger:#f04f72;
           --sw:248px;
           --sw-c:64px;
         }
         body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;}
 
-        .al{display:flex;min-height:100vh;background:var(--bg);}
+        .al{display:flex;min-height:100vh;background:var(--bg);position:relative;}
 
         /* ── SIDEBAR ── */
         .al-sb{
@@ -57,9 +68,9 @@ const AdminLayout = () => {
           display:flex;flex-direction:column;
           position:sticky;top:0;height:100vh;
           overflow-y:auto;overflow-x:hidden;
-          transition:width .22s ease;
+          transition:width .22s ease, transform .22s ease;
+          z-index:100;
         }
-        .al-sb.col{width:var(--sw-c);}
 
         /* LOGO */
         .al-logo{
@@ -94,7 +105,6 @@ const AdminLayout = () => {
         .al-nav{flex:1;padding:12px 8px;display:flex;flex-direction:column;gap:1px;}
         .al-nl{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
           color:var(--muted);padding:8px 8px 4px;white-space:nowrap;}
-        .al-sb.col .al-nl{opacity:0;pointer-events:none;}
 
         .al-link{
           display:flex;align-items:center;gap:10px;
@@ -122,7 +132,7 @@ const AdminLayout = () => {
 
         .al-subs{padding-left:14px;display:flex;flex-direction:column;gap:1px;margin-top:1px;}
         .al-subs .al-link{font-size:12.5px;padding:7px 10px;}
-        .al-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .14s;}
+        .al-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);flex-shrink:0;}
         .al-link.on .al-dot{background:var(--accent);}
 
         /* FOOTER */
@@ -130,7 +140,7 @@ const AdminLayout = () => {
         .al-out{
           display:flex;align-items:center;gap:10px;
           padding:9px 10px;border-radius:9px;
-          color:var(--muted);font-size:13px;font-weight:500;
+          color:var(--sub);font-size:13px;font-weight:500;
           text-decoration:none;white-space:nowrap;
           transition:background .14s,color .14s;cursor:pointer;
         }
@@ -180,11 +190,59 @@ const AdminLayout = () => {
           box-shadow:0 0 12px var(--accent-g);
         }
         .al-body{flex:1;padding:28px;overflow-y:auto;}
+
+        /* MOBILE BACKDROP OVERLAY */
+        .al-overlay {
+          display: none;
+          position: fixed; inset: 0;
+          background: rgba(4, 6, 12, 0.7);
+          backdrop-filter: blur(4px);
+          z-index: 90;
+        }
+
+        /* ── DESKTOP COLLAPSED STATE (PURE CSS) ── */
+        @media (min-width: 769px) {
+          .al-sb.col { width: var(--sw-c); }
+          .al-sb.col .al-logo-text,
+          .al-sb.col .al-nl,
+          .al-sb.col .al-link span:not(.al-link-icon),
+          .al-sb.col .al-drop-hd span,
+          .al-sb.col .al-drop-hd svg:last-child,
+          .al-sb.col .al-subs,
+          .al-sb.col .al-out span {
+            display: none !important;
+          }
+        }
+
+        /* ── RESPONSIVE MOBILE BREAKPOINT ── */
+        @media (max-width: 768px) {
+          .al-sb {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: var(--sw) !important;
+            transform: translateX(-100%);
+          }
+          .al-sb.mobile-open {
+            transform: translateX(0);
+          }
+          .al-overlay.show {
+            display: block;
+          }
+          .al-hdr { padding: 0 16px; }
+          .al-body { padding: 16px; }
+          .al-crumb { display: none; }
+        }
       `}</style>
 
       <div className="al">
+        {/* MOBILE OVERLAY */}
+        <div 
+          className={`al-overlay ${isSidebarOpen ? 'show' : ''}`} 
+          onClick={() => setIsSidebarOpen(false)} 
+        />
+
         {/* SIDEBAR */}
-        <aside className={`al-sb${isSidebarOpen ? '' : ' col'}`}>
+        <aside className={`al-sb ${isSidebarOpen ? 'mobile-open' : 'col'}`}>
 
           {/* LOGO */}
           <div className="al-logo">
@@ -194,71 +252,69 @@ const AdminLayout = () => {
                 <rect x="7" y="14" width="6" height="3" rx="1" fill="white" fillOpacity=".6"/>
               </svg>
             </div>
-            {isSidebarOpen && (
-              <div className="al-logo-text">
-                <div className="al-logo-name">LuxeLiving</div>
-                <div className="al-logo-tag">ADMIN CONSOLE</div>
-              </div>
-            )}
+            <div className="al-logo-text">
+              <div className="al-logo-name">LuxeLiving</div>
+              <div className="al-logo-tag">ADMIN CONSOLE</div>
+            </div>
           </div>
 
+          {/* NAVIGATION */}
           <nav className="al-nav">
-                {/* Overview */}
-                {isSidebarOpen && <div className="al-nl">Overview</div>}
-                <Link to="/admin" className={`al-link${isActive('/admin') ? ' on' : ''}`}>
-                  <span className="al-link-icon"><LayoutDashboard size={16} /></span>
-                  {isSidebarOpen && <span>Dashboard</span>}
-                </Link>
+            <div className="al-nl">Overview</div>
+            <Link to="/admin" className={`al-link ${isActive('/admin') ? 'on' : ''}`}>
+              <span className="al-link-icon"><LayoutDashboard size={16} /></span>
+              <span>Dashboard</span>
+            </Link>
 
-                {/* Manage Store */}
-                {isSidebarOpen && <div className="al-nl" style={{marginTop:8}}>Content</div>}
-                <div className="al-drop-hd" onClick={() => setIsManageOpen(v => !v)}>
-                  <div className="al-drop-l">
-                    <Package size={16} />
-                    {isSidebarOpen && <span>Manage Store</span>}
-                  </div>
-                  {isSidebarOpen && (isManageOpen ? <ChevronUp size={13}/> : <ChevronDown size={13}/>)}
-                </div>
-                {isManageOpen && isSidebarOpen && (
-                  <div className="al-subs">
-                    {subNav.map((s, i) => (
-                      <Link key={i} to={s.path} className={`al-link${isActive(s.path) ? ' on' : ''}`}>
-                        <span className="al-dot"/>
-                        <span>{s.name}</span>
-                      </Link>
-                    ))}
-                  </div>
-                )}
+            <div className="al-nl" style={{marginTop:8}}>Content</div>
+            <div className="al-drop-hd" onClick={() => setIsManageOpen(v => !v)}>
+              <div className="al-drop-l">
+                <span className="al-link-icon"><Package size={16} /></span>
+                <span>Manage Store</span>
+              </div>
+              {isManageOpen ? <ChevronUp size={13}/> : <ChevronDown size={13}/>}
+            </div>
+            {isManageOpen && (
+              <div className="al-subs">
+                {subNav.map((s, i) => (
+                  <Link key={i} to={s.path} className={`al-link ${isActive(s.path) ? 'on' : ''}`}>
+                    <span className="al-dot"/>
+                    <span>{s.name}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
 
-                {/* ── MANAGE USERS (ADDED HERE) ── */}
-                {isSidebarOpen && <div className="al-nl" style={{marginTop:12}}>Administration</div>}
-                <Link to="/admin/users" className={`al-link${isActive('/admin/users') ? ' on' : ''}`}>
-                  <span className="al-link-icon"><Users size={16} /></span>
-                  {isSidebarOpen && <span>Manage Users</span>}
-                </Link>
+            <div className="al-nl" style={{marginTop:12}}>Administration</div>
+            <Link to="/admin/users" className={`al-link ${isActive('/admin/users') ? 'on' : ''}`}>
+              <span className="al-link-icon"><Users size={16} /></span>
+              <span>Manage Users</span>
+            </Link>
 
-                {/* ── MANAGE ORDERS  ── */}
-                {isSidebarOpen && <div className="al-nl" style={{marginTop:12}}>Sales</div>}
-                <Link to="/admin/orders" className={`al-link${isActive('/admin/orders') ? ' on' : ''}`}>
-                  <span className="al-link-icon"><ShoppingCart size={16} /></span>
-                  {isSidebarOpen && <span>Manage Orders</span>}
-                </Link>
-              </nav>
+            <div className="al-nl" style={{marginTop:12}}>Sales</div>
+            <Link to="/admin/orders" className={`al-link ${isActive('/admin/orders') ? 'on' : ''}`}>
+              <span className="al-link-icon"><ShoppingCart size={16} /></span>
+              <span>Manage Orders</span>
+            </Link>
+          </nav>
 
-
+          {/* FOOTER - EXIT BUTTON */}
           <div className="al-foot">
             <a href="/" className="al-out">
-              <LogOut size={16}/>
-              {isSidebarOpen && <span>Exit to Website</span>}
+              <span className="al-link-icon"><LogOut size={16}/></span>
+              <span>Exit to Website</span>
             </a>
           </div>
         </aside>
 
-        {/* MAIN */}
+        {/* MAIN BODY */}
         <div className="al-main">
           <header className="al-hdr">
             <div className="al-hdr-l">
-              <div className="al-crumb">Admin <span>/ Dashboard</span></div>
+              <button className="al-toggle" onClick={() => setIsSidebarOpen(prev => !prev)}>
+                {isSidebarOpen && window.innerWidth <= 768 ? <X size={16} /> : <Menu size={16} />}
+              </button>
+              <div className="al-crumb" style={{ marginLeft: 12 }}>Admin <span>/ Dashboard</span></div>
             </div>
             <div className="al-hdr-r">
               <button className="al-icon-btn">
@@ -269,7 +325,9 @@ const AdminLayout = () => {
               <div className="al-avatar">A</div>
             </div>
           </header>
-          <main className="al-body"><Outlet/></main>
+          <main className="al-body">
+            <Outlet/>
+          </main>
         </div>
       </div>
     </>
