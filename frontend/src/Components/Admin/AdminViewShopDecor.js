@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trash2, Edit2, X, Eye, ArrowLeft, Plus, Upload, CheckCircle2, AlertCircle, ShoppingBag, Layers } from "lucide-react";
 import "./AdminForms.css"; 
+import { API } from "../../api";
 
-const API_BASE_URL = "http://localhost:5001/api/decor"; 
+const API_BASE_URL = API.decor;
 
 const formatImageUrl = (pathString) => {
   if (!pathString) return "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=500";
   if (pathString.startsWith("http")) return pathString;
   const cleanPath = pathString.startsWith("/") ? pathString.substring(1) : pathString;
-  return `http://localhost:5001/${cleanPath}`;
+  return `${process.env.REACT_APP_API_URL}/${cleanPath}`;
 };
 
 /* ── shared premium style tokens ── */

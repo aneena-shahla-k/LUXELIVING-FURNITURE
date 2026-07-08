@@ -2,13 +2,18 @@ import React, { useState, useEffect, useCallback } from "react"; // 👈 useCall
 import { useNavigate } from "react-router-dom";
 import { Trash2, Edit2, X, ArrowLeft, Plus, Upload, CheckCircle2, AlertCircle, ShoppingBag } from "lucide-react";
 import "./AdminForms.css"; 
+import { API } from "../../api";
 
-const API_BASE_URL = "http://localhost:5001/api/decor-details"; 
-const BACKEND_URL = "http://localhost:5001";
+const API_BASE_URL = API.decorDetails;
+const BACKEND_URL = process.env.REACT_APP_API_URL;
 
 const formatImageUrl = (pathString) => {
-  if (!pathString) return "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=500";
-  if (pathString.startsWith("http")) return pathString;
+  if (!pathString)
+    return "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=500";
+
+  if (pathString.startsWith("http"))
+    return pathString;
+
   return `${BACKEND_URL}${pathString.startsWith("/") ? "" : "/"}${pathString}`;
 };
 

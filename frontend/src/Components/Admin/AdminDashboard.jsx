@@ -6,6 +6,7 @@ import {
   Clock, Layers, CheckCircle2,
   Users
 } from 'lucide-react';
+import { API } from '../../api';
 
 
 const SparkBar = ({ values = [], color = '#3d7eff' }) => {
@@ -83,9 +84,9 @@ const AdminDashboard = () => {
         const token = localStorage.getItem('token'); // JWT Token from local storage
 
         // Parallel API calls using Promise.all Settled to ensure one failing doesn't break the other
-        const [statsRes, ordersRes] = await Promise.all([
-          fetch('http://localhost:5001/api/dashboard/stats'),
-          fetch('http://localhost:5001/api/admin/orders', {
+       const [statsRes, ordersRes] = await Promise.all([
+          fetch(`${API.dashboard}/stats`),
+          fetch(`${API.admin}/orders`, {
             headers: { 'Authorization': `Bearer ${token}` }
           })
         ]);

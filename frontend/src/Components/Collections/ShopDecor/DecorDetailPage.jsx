@@ -2,6 +2,7 @@ import React, {useEffect,useState} from "react";
 import axios from "axios";
 import { useParams, Link} from "react-router-dom";
 import "./DecorDetailPage.css";
+import { API } from "../../../api";
 
 const DecorDetailPage = () => {
   const { slug } = useParams();
@@ -15,8 +16,7 @@ const DecorDetailPage = () => {
     const fetchDetail =
       async () => {
         try {
-          const { data } =
-            await axios.get(`http://localhost:5001/api/decor-details/${slug}`);
+          const { data } = await axios.get(`${API.decorDetails}/${slug}`);
           setDetail(data);
           setSelectedItems(
             data.products.map(
@@ -72,7 +72,7 @@ const handleAddToCart = async () => {
 
     for (const product of selectedProducts) {
       await axios.post(
-        "http://localhost:5001/api/cart/add",
+        `${API.cart}/add`,
         {
           name: product.name,
           price: product.price,
@@ -139,52 +139,26 @@ const handleAddToCart = async () => {
 
       <div className="shop-container">
 
-        {/* LEFT */}
         <div className="image-section">
-
-          <img
-            src={`http://localhost:5001${detail.mainImage}`}
-
+          <img src={`${process.env.REACT_APP_API_URL}${detail.mainImage}`}
             alt=""
-
-            className="main-image"
-          />
-
+            className="main-image" />
         </div>
-
-
-
         {/* RIGHT */}
         <div className="look-panel">
-
-          <h2>
-            Shop This Look
-          </h2>
-
-
+         <h2>Shop This Look</h2>
 
           <div className="product-list">
-
             {detail.products.map(
-              (
-                item,
-                index
-              ) => (
-
+              (item,index) => (
                 <div
-                  className="look-item"
-                  key={index}
-                >
-
+                  className="look-item" key={index}>
                   <div className="item-left">
-
                     <input
                       type="checkbox"
-
                       checked={selectedItems.includes(
                         index
                       )}
-
                       onChange={() =>
                         handleCheckboxChange(
                           index
@@ -192,26 +166,11 @@ const handleAddToCart = async () => {
                       }
                     />
 
-
-
-                    <img
-                      src={`http://localhost:5001${item.image}`}
-                      alt=""
-                    />
-
-
-
-                    <p>
-                      {item.name}
-                    </p>
+                    <img src={`${process.env.REACT_APP_API_URL}${item.image}`} alt="" />
+                    <p>{item.name}</p>
 
                   </div>
-
-
-
-                  <span>
-                    ₹ {item.price}
-                  </span>
+                  <span>₹ {item.price} </span>
 
                 </div>
               )

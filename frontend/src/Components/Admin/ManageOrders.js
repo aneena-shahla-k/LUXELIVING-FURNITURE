@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API } from '../../api';
 
 const ManageOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -8,7 +9,7 @@ const ManageOrders = () => {
   const fetchAllOrders = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/admin/orders', {
+      const response = await fetch(`$API.admin}/orders`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -36,7 +37,7 @@ const ManageOrders = () => {
         paymentStatus: type === 'payment' ? newValue : currentStatus.paymentStatus
       };
 
-      const response = await fetch(`http://localhost:5001/api/admin/orders/${orderId}/status`, {
+      const response = await fetch(`${API.admin}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

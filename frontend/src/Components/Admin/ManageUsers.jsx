@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Trash2, Shield, Mail } from 'lucide-react';
+import { API } from '../../api';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -25,7 +26,7 @@ const ManageUsers = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token"); 
-      const response = await fetch('http://localhost:5001/api/users', {
+      const response = await fetch(API.users, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -41,7 +42,7 @@ const ManageUsers = () => {
     if (window.confirm("Are you sure you want to remove this user?")) {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:5001/api/users/${id}`, {
+        const response = await fetch(`${API.users}/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });

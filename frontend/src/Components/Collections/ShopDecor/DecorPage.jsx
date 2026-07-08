@@ -1,7 +1,8 @@
 import React, { useEffect, useState} from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./DecorPage.css"
+import "./DecorPage.css";
+import { API } from "../../../api";
 
 const DecorPage = () => {
   const [decor, setDecor] =
@@ -15,10 +16,7 @@ const DecorPage = () => {
 
 
   const fetchDecor = async () => {
-    const { data } =
-      await axios.get(
-        "http://localhost:5001/api/decor"
-      );
+    const { data } = await axios.get(API.decor);
 
     setDecor(data);
   };
@@ -52,7 +50,7 @@ const DecorPage = () => {
           <div className="decor-image-wrapper">
 
             <img
-              src={`http://localhost:5001${item.image}`}
+              src={`${process.env.REACT_APP_API_URL}${item.image}`}
               alt={item.title}
             />
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { API } from '../../../api';
 
 const DynamicShopTheLook = () => {
   const { roomType } = useParams();
@@ -8,7 +9,6 @@ const DynamicShopTheLook = () => {
   const [, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // State for tracking selected product IDs
   const [selectedProducts, setSelectedProducts] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -16,7 +16,7 @@ const DynamicShopTheLook = () => {
     const fetchLookbook = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5001/api/shop-look/${roomType || 'bedroom'}`);
+        const response = await fetch(`${API.shopLook}/${roomType || 'bedroom'}`);
         const json = await response.json();
         
         if (json.success) {
@@ -73,7 +73,7 @@ const handleAddSelectedToCart = async (lookProducts) => {
     setIsSubmitting(true);
     try {
       for (const item of chosenItems) {
-        await fetch('http://localhost:5001/api/cart/add', { // 👈 Fixed URL with /add
+        await fetch(`${API.cart}/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -120,16 +120,14 @@ const handleAddSelectedToCart = async (lookProducts) => {
         return (
           <div key={look._id} style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
             
-            {/* Top Concept Big Image (Responsive Banner) */}
             <div style={{ width: '100%', maxHeight: '480px', borderRadius: '16px', overflow: 'hidden', marginBottom: '50px', marginTop: '100px',backgroundColor: '#fcfcfc' }}>
               <img 
-                src={`http://localhost:5001${look.mainImg}`} 
+                src={`${process.env.REACT_APP_API_URL}${look.mainImg}`} 
                 alt={look.title} 
                 style={{ width: '100%', height: 'auto', maxHeight: '480px', objectFit: 'cover' }}
               />
             </div>
 
-            {/* Centered Heading Section */}
             <div style={{ marginBottom: '40px' }}>
               <h2 style={{ fontSize: '28px', fontWeight: '600', color: '#1a1a1a', margin: '0 0 10px 0', trackingTight: '-0.5px' }}>
                 Complete the Look
@@ -184,7 +182,7 @@ const handleAddSelectedToCart = async (lookProducts) => {
                     {prod.productImage && (
                       <div style={{ width: '100%', height: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px', overflow: 'hidden' }}>
                         <img 
-                          src={`http://localhost:5001${prod.productImage}`} 
+                          src={`${process.env.REACT_APP_API_URL}${prod.productImage}`} 
                           alt={prod.title} 
                           style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                         />

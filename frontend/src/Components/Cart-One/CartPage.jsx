@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API } from "../../api";
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Coupon States
   const [couponCode, setCouponCode] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState(null); // Applied coupon object സൂക്ഷിക്കാൻ
+  const [appliedCoupon, setAppliedCoupon] = useState(null); 
   const [couponError, setCouponError] = useState('');
 
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function CartPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/cart', {
+      const response = await fetch(API.cart, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -47,9 +47,9 @@ export default function CartPage() {
           
           if (imgUrl && !imgUrl.startsWith('http')) {
             if (imgUrl.startsWith('/')) {
-              imgUrl = `http://localhost:5001${imgUrl}`;
+              imgUrl = `${process.env.REACT_APP_API_URL}${imgUrl}`;
             } else {
-              imgUrl = `http://localhost:5001/${imgUrl}`; 
+              imgUrl = `${process.env.REACT_APP_API_URL}/${imgUrl}`;
             }
           }
 
@@ -88,7 +88,7 @@ export default function CartPage() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:5001/api/cart/update/${itemId}`, {
+      const response = await fetch(`${API.cart}/update/${itemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export default function CartPage() {
     const token = localStorage.getItem('token');
     
     try {
-      const response = await fetch(`http://localhost:5001/api/cart/remove/${itemId}`, {
+      const response = await fetch(`${API.cart}/remove/${itemId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

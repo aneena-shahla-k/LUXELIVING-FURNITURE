@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import './SignUpModal.css';
+import { API } from "../../api";
 
 export default function SignUpModal({ onClose }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -33,10 +34,10 @@ export default function SignUpModal({ onClose }) {
     e.preventDefault();
     setMessage({ text: '', type: '' });
 
-    const url = isLogin 
-    ? 'http://localhost:5001/api/auth/login' 
-    : 'http://localhost:5001/api/auth/register';
-
+    const url = isLogin
+  ? `${API.auth}/login`
+  : `${API.auth}/register`;
+  
     const bodyData = isLogin 
       ? { email: formData.email, password: formData.password } 
       : formData;

@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import image from "../../assets/images/logo/logo-LL.png";
 import SignUpModal from '../SignUpModal/SignUpModal';
 import { jwtDecode } from 'jwt-decode';
+import { API } from "../../api";
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -35,7 +36,7 @@ export default function Navbar() {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/cart', {
+      const response = await fetch(API.cart, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ArrowLeft, Upload, Palette, CheckCircle2, AlertCircle } from "lucide-react";
 import "./AdminForms.css";
+import { API } from "../../api";
 
 const AdminDecor = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const AdminDecor = () => {
       fd.append("items", JSON.stringify(items.split(",")));
       fd.append("image", image);
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:5001/api/decor", fd, {
+      await axios.post(API.decor, fd, {
         headers: { Authorization: `Bearer ${token}` }
       });
       showToast("success", "Decor collection created.");

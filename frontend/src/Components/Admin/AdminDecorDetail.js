@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ArrowLeft, Upload, Plus, Trash2, FileImage, CheckCircle2, AlertCircle } from "lucide-react";
 import "./AdminForms.css";
+import { API } from "../../api";
 
 const AdminDecorDetail = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const AdminDecorDetail = () => {
       fd.append("products", JSON.stringify(products.map(p => ({ name: p.name, price: p.price }))));
       products.forEach((p, i) => { if (p.image) fd.append(`productImage_${i}`, p.image); });
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:5001/api/decor-details", fd, {
+      await axios.post(API.decorDetails, fd, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
       });
       showToast("success", "Decor detail saved successfully.");

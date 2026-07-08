@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Upload, Package, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Upload, Package, CheckCircle2, AlertCircle, Import } from "lucide-react";
 import "./AdminForms.css";
+import { API } from "../../api";
 
 /* ── premium token system for add form ── */
 const T = {
@@ -54,7 +55,7 @@ export default function AdminAddProduct() {
     formData.append("img", image);
 
     try {
-      const res = await fetch("http://localhost:5001/api/products", { method: "POST", body: formData });
+      const res = await fetch(API.products, { method: "POST", body: formData });
       const data = await res.json();
       if (res.ok) {
         showToast("success", "Product published successfully.");

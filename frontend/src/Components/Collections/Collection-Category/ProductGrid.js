@@ -1,5 +1,6 @@
 import React from 'react';
 import "./Common.css";
+import { API } from '../../../api';
 
 export default function ProductGrid({ products, title }) {
 
@@ -12,7 +13,7 @@ export default function ProductGrid({ products, title }) {
     }
 
     try {
-      const response = await fetch('http://localhost:5001/api/cart/add', {
+      const response = await fetch(`${API.cart}/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ export default function ProductGrid({ products, title }) {
           <div className="col-md-4 col-sm-6" key={item._id || item.name}>
             <div className="product-card">
               <img 
-                src={`http://localhost:5001/${item.img}`} 
+                src={`${process.env.REACT_APP_API_URL}/${item.img}`}
                 alt={item.name} 
                 className="img-fluid" 
               />

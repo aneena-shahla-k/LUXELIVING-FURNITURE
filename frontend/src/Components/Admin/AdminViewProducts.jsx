@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react"; // 👈 useCall
 import { useNavigate } from "react-router-dom";
 import { Trash2, Edit2, X, ArrowLeft, Search, Package, CheckCircle2, AlertCircle, Upload } from "lucide-react";
 import "./AdminForms.css";
+import { API, BASE_URL } from "../../api";
 
 const S = {
   page: { fontFamily: "'Inter',sans-serif" },
@@ -40,7 +41,7 @@ const S = {
 };
 
 const CATEGORIES = ["all","chair","sofa","swing","bed","table","shelves"];
-const API = "http://localhost:5001/api/products";
+const PRODUCT_API = API.products;
 
 export default function AdminViewProducts() {
   const navigate = useNavigate();
@@ -130,9 +131,9 @@ export default function AdminViewProducts() {
     if (path.startsWith("http")) return path;
     const cleanPath = path.startsWith("/") ? path.slice(1) : path;
     if (cleanPath.startsWith("uploads/")) {
-      return `http://localhost:5001/${cleanPath}`;
+      return `{$BASE_URL}/${cleanPath}`;
     }
-    return `http://localhost:5001/uploads/${cleanPath}`;
+    return `${BASE_URL}/uploads/${cleanPath}`;
   };
 
   return (

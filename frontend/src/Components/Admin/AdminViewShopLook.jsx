@@ -2,13 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trash2, Edit2, X, Eye, ArrowLeft, Plus, Upload, CheckCircle2, AlertCircle, ShoppingBag } from "lucide-react";
 import "./AdminForms.css";
+import { API } from "../../api";
 
-const API = "http://localhost:5001/api/shop-look";
+const SHOP_LOOK_API = API.shopLook;
+
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 const fmtImg = (p) => {
-  if (!p) return "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=400";
+  if (!p)
+    return "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=400";
+
   if (p.startsWith("http")) return p;
-  return `http://localhost:5001/${p.startsWith("/") ? p.slice(1) : p}`;
+
+  return `${BASE_URL}/${p.startsWith("/") ? p.slice(1) : p}`;
 };
 
 const ROOM_COLORS = {
@@ -164,7 +170,7 @@ export default function AdminViewShopLook() {
 
   const fetchLooks = async () => {
     try {
-      const res  = await fetch(`${API}/`);
+const res = await fetch(SHOP_LOOK_API);
       if (!res.ok) return;
       const raw  = await res.json();
       const data = Array.isArray(raw) ? raw : (raw.looks || raw.data || []);
@@ -188,7 +194,7 @@ export default function AdminViewShopLook() {
     e.stopPropagation();
     if (!window.confirm("Delete this room look?")) return;
     try {
-      const res = await fetch(`${API}/delete/${id}`, { method:"DELETE" });
+      const res = await fetch(`${SHOP_LOOK_API}/delete/${id}`, { method:"DELETE" });
       if (res.ok) { showToast("success","Look deleted."); fetchLooks(); }
       else showToast("error","Delete failed.");
     } catch { showToast("error","Server error."); }
@@ -233,7 +239,7 @@ export default function AdminViewShopLook() {
     }))));
     editing.products.forEach((p, i) => { if (p.newFile) fd.append(`productImages_${i}`, p.newFile); });
     try {
-      const res = await fetch(`${API}/edit/${editing._id}`, { method:"PUT", body:fd });
+      const res = await fetch(`${SHOP_LOOK_API}/edit/${editing._id}`, { method:"PUT", body:fd });
       if (res.ok) { showToast("success","Look updated."); setEditOpen(false); fetchLooks(); }
       else showToast("error","Update failed.");
     } catch { showToast("error","Server error."); }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API } from "../../api";
 
 const CheckoutForm = ({ totalAmount, cartItems, shippingAddress }) => {
   const stripe = useStripe();
@@ -21,7 +22,7 @@ const CheckoutForm = ({ totalAmount, cartItems, shippingAddress }) => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await axios.post('http://localhost:5001/api/payment/create-payment-intent', {
+      const response = await axios.post( `${API.payment}/create-payment-intent`, {
         items: cartItems,
         totalAmount,
         shippingAddress
@@ -49,7 +50,7 @@ const CheckoutForm = ({ totalAmount, cartItems, shippingAddress }) => {
   try {
     const token = localStorage.getItem('token');
     
-    await axios.delete('http://localhost:5001/api/cart/clear', {
+    await axios.delete(`${API.cart}/clear`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     console.log("Database: Cart cleared successfully.");

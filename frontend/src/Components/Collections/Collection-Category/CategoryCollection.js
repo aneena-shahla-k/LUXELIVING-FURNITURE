@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ProductGrid from '../../../Components/Collections/Collection-Category/ProductGrid'; // ProductGrid കറക്റ്റ് പാത്തിൽ ഇംപോർട്ട് ചെയ്യുക
+import ProductGrid from '../../../Components/Collections/Collection-Category/ProductGrid';
+import { API } from '../../../api';
 
 const CategoryCollection = () => {
   const { categoryName } = useParams(); 
@@ -11,7 +12,7 @@ const CategoryCollection = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5001/api/products?category=${categoryName}`);
+        const response = await fetch(`${API.products}?category=${categoryName}`);
         const data = await response.json();
         
         if (response.ok) {
