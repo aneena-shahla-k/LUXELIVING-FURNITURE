@@ -47,7 +47,7 @@ export default function AdminShopTheLook() {
     fd.append("products", JSON.stringify(products.map(p => ({ title: p.title, price: Number(p.price) || 0 }))));
     products.forEach((p, i) => fd.append(`productImages_${i}`, p.file || new Blob(), "empty.jpg"));
     try {
-      const res = await axios.post(`$API.shopLook}/add`, fd, {
+      const res = await axios.post(`${API.shopLook}/add`, fd, {
         headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` }
       });
       showToast("success", res.data.message || "Space configuration saved.");

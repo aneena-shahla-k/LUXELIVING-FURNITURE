@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Upload, Package, CheckCircle2, AlertCircle, Import } from "lucide-react";
+import { ArrowLeft, Upload, Package, CheckCircle2, AlertCircle } from "lucide-react";
 import "./AdminForms.css";
 import { API } from "../../api";
 

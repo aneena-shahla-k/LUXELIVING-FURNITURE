@@ -41,7 +41,7 @@ const S = {
 };
 
 const CATEGORIES = ["all","chair","sofa","swing","bed","table","shelves"];
-const PRODUCT_API = API.products;
+// const PRODUCT_API = API.products;
 
 export default function AdminViewProducts() {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ export default function AdminViewProducts() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      const res = await fetch(`${API}`);
+      const res = await fetch(API.products);
       const data = await res.json();
       const actualArray = Array.isArray(data) ? data : (data.data || data.products || []);
       setProducts(actualArray);
@@ -88,7 +88,7 @@ export default function AdminViewProducts() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this product?")) return;
     try {
-      const res = await fetch(`${API}/delete/${id}`, { method:"DELETE" });
+      const res = await fetch(`${API.products}/delete/${id}`, { method:"DELETE" });
       if (res.ok) { 
         showToast("success", "Product deleted successfully."); 
         fetchProducts(); 
@@ -114,7 +114,7 @@ export default function AdminViewProducts() {
     if (editImg) fd.append("img", editImg);
     
     try {
-      const res = await fetch(`${API}/edit/${editing._id}`, { method:"PUT", body:fd });
+      const res = await fetch(`${API.products}/edit/${editing._id}`, { method:"PUT", body:fd });
       if (res.ok) {
         showToast("success", "Product configurations updated.");
         setModalOpen(false); 
@@ -131,7 +131,7 @@ export default function AdminViewProducts() {
     if (path.startsWith("http")) return path;
     const cleanPath = path.startsWith("/") ? path.slice(1) : path;
     if (cleanPath.startsWith("uploads/")) {
-      return `{$BASE_URL}/${cleanPath}`;
+    return `${BASE_URL}/${cleanPath}`;
     }
     return `${BASE_URL}/uploads/${cleanPath}`;
   };

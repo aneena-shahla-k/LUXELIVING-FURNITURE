@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trash2, Edit2, X, Eye, ArrowLeft, Plus, Upload, CheckCircle2, AlertCircle, ShoppingBag } from "lucide-react";
 import "./AdminForms.css";
@@ -168,22 +168,34 @@ export default function AdminViewShopLook() {
 
   const showToast = (type, msg) => { setToast({type,msg}); setTimeout(()=>setToast(null),3500); };
 
-  const fetchLooks = async () => {
-    try {
-const res = await fetch(SHOP_LOOK_API);
-      if (!res.ok) return;
-      const raw  = await res.json();
-      const data = Array.isArray(raw) ? raw : (raw.looks || raw.data || []);
-      setLooks(data); setFiltered(data);
-      const rooms = ["all", ...new Set(data.map(l => l.roomType?.toLowerCase().trim()).filter(Boolean))];
-      setRoomTypes(rooms);
-    } catch { showToast("error","Could not reach server."); }
-  };
+const fetchLooks = useCallback(async () => {
+  try {
+    const res = await fetch(SHOP_LOOK_API);
+    if (!res.ok) return;
+
+    const raw = await res.json();
+    const data = Array.isArray(raw) ? raw : (raw.looks || raw.data || []);
+
+    setLooks(data);
+    setFiltered(data);
+
+    const rooms = [
+      "all",
+      ...new Set(
+        data.map(l => l.roomType?.toLowerCase().trim()).filter(Boolean)
+      ),
+    ];
+
+    setRoomTypes(rooms);
+  } catch {
+    showToast("error", "Could not reach server.");
+  }
+}, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { 
     fetchLooks();
-   }, []);
+   }, [fetchLooks]);
 
   useEffect(() => {
     if (roomFilter === "all") setFiltered(looks);
