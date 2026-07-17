@@ -11,9 +11,11 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "luxeliving/decor-details",
+    folder: "luxeliving",
     allowed_formats: ["jpg", "jpeg", "png", "webp", "jxl"],
   },
 });
 
-module.exports = multer({ storage });
+const upload = multer({ storage });
+
+module.exports = upload;

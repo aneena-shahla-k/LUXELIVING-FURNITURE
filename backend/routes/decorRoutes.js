@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
 
 const DecorCategory = require("../models/DecorCategory");
+const upload = require("../middleware/upload");
 
 const {
   protect,
@@ -11,64 +10,41 @@ const {
 } = require("../middleware/authMiddleware");
 
 
-// STORAGE
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      Date.now() +
-        path.extname(file.originalname)
-    );
-  },
-});
-
-const upload = multer({ storage });
-
-
+// =========================
 // CREATE CATEGORY
+// =========================
 router.post(
   "/",
   protect,
   adminOnly,
   upload.single("image"),
-
   async (req, res) => {
     try {
-      const {
+      const { title, slug, items, featured } = req.body;
+
+      const newCategory = new DecorCategory({
         title,
         slug,
-        items,
-        featured,
-      } = req.body;
 
-      const newCategory =
-        new DecorCategory({
-          title,
-          slug,
+        image: req.file ? req.file.path : "",
 
-          image: req.file
-            ? `/uploads/${req.file.filename}`
-            : "",
+        items: items ? JSON.parse(items) : [],
 
-          items: JSON.parse(items),
-
-          featured,
-        });
+        featured: featured === "true" || featured === true,
+      });
 
       await newCategory.save();
 
       res.status(201).json({
         success: true,
-        message:
-          "Decor category created",
+        message: "Decor category created successfully.",
         data: newCategory,
       });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({
+        success: false,
         message: error.message,
       });
     }
@@ -76,45 +52,57 @@ router.post(
 );
 
 
-// GET ALL
+// =========================
+// GET ALL CATEGORIES
+// =========================
 router.get("/", async (req, res) => {
   try {
-    const categories =
-      await DecorCategory.find();
+    const categories = await DecorCategory.find().sort({
+      createdAt: -1,
+    });
 
-    res.json(categories);
+    res.status(200).json(categories);
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 });
 
 
-// DELETE
+// =========================
+// DELETE CATEGORY
+// =========================
 router.delete(
   "/:id",
   protect,
   adminOnly,
-
   async (req, res) => {
     try {
-      await DecorCategory.findByIdAndDelete(
-        req.params.id
-      );
+      await DecorCategory.findByIdAndDelete(req.params.id);
 
-      res.json({
-        message:
-          "Category deleted successfully",
+      res.status(200).json({
+        success: true,
+        message: "Category deleted successfully.",
       });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({
+        success: false,
         message: error.message,
       });
     }
   }
 );
 
+
+// =========================
+// UPDATE CATEGORY
+// =========================
 router.put(
   "/:id",
   protect,
@@ -123,10 +111,11 @@ router.put(
   async (req, res) => {
     try {
       const { title, slug, items, featured } = req.body;
+
       const updateData = {
         title,
         slug,
-        featured: featured === 'true' || featured === true,
+        featured: featured === "true" || featured === true,
       };
 
       if (items) {
@@ -134,27 +123,32 @@ router.put(
       }
 
       if (req.file) {
-        updateData.image = `/uploads/${req.file.filename}`;
+        updateData.image = req.file.path;
       }
 
-      const updatedCategory = await DecorCategory.findByIdAndUpdate(
-        req.params.id,
-        updateData,
-        { new: true }
-      );
+      const updatedCategory =
+        await DecorCategory.findByIdAndUpdate(
+          req.params.id,
+          updateData,
+          {
+            new: true,
+          }
+        );
 
-      res.json({
+      res.status(200).json({
         success: true,
-        message: "Decor category updated successfully! ✨",
+        message: "Decor category updated successfully.",
         data: updatedCategory,
       });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({
+        success: false,
         message: error.message,
       });
     }
   }
 );
-
 
 module.exports = router;

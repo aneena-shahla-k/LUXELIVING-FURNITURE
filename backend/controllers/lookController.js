@@ -1,93 +1,194 @@
 // controllers/lookController.js
-const Look = require('../models/Look');
 
+const Look = require("../models/Look");
+
+// ===============================
+// CREATE LOOK
+// ===============================
 const createLook = async (req, res) => {
   try {
-    // 1. Core text fields validation
     const { roomType, title, products } = req.body;
-    
-    if (!req.files || !req.files['mainImg']) {
-      return res.status(400).json({ success: false, message: 'Main room concept image is mandatory.' });
+
+    if (!req.files || !req.files.mainImg) {
+      return res.status(400).json({
+        success: false,
+        message: "Main image is required",
+      });
     }
 
-    // 2. Extract main uploaded image path
-    const mainImgPath = `/uploads/${req.files['mainImg'][0].filename}`;
+    const mainImg = req.files.mainImg[0].path;
 
-    // 3. Parse and loop products array string back to native JSON
     let parsedProducts = [];
+
     if (products) {
       parsedProducts = JSON.parse(products);
     }
 
-    // 4. Attach corresponding uploaded sub-images matching keys: productImages_0, productImages_1...
-    const finalProducts = parsedProducts.map((prod, index) => {
-      const fileField = req.files[`productImages_${index}`];
-      let subImagePath = '';
-      
-      if (fileField && fileField[0] && fileField[0].size > 0) {
-        subImagePath = `/uploads/${fileField[0].filename}`;
-      }
-      
+    const finalProducts = parsedProducts.map((product, index) => {
+      const imageField = req.files[`productImages_${index}`];
+
       return {
-        title: prod.title,
-        price: Number(prod.price) || 0,
-        productImage: subImagePath
+        title: product.title,
+        price: Number(product.price) || 0,
+        productImage: imageField
+          ? imageField[0].path
+          : "",
       };
     });
 
-    // 5. Save configured asset directly inside MongoDB cluster
     const newLook = await Look.create({
-      roomType,
+      roomType: roomType.toLowerCase(),
       title,
-      mainImg: mainImgPath,
-      products: finalProducts
+      mainImg,
+      products: finalProducts,
     });
 
     res.status(201).json({
       success: true,
-      message: "Curated space configuration saved successfully! ✨",
-      data: newLook
+      message: "Look created successfully",
+      data: newLook,
     });
+  } catch (err) {
+    console.error(err);
 
-  } catch (error) {
-    console.error("Backend Payload Save Error:", error);
-    res.status(500).json({ success: false, message: 'Internal validation failed.', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-// Client view display trigger logic
-const getLooksByRoom = async (req, res) => {
-  try {
-    const { roomType } = req.params;
-    const looks = await Look.find({ roomType: roomType.toLowerCase(), isActive: true });
-    res.status(200).json({ success: true, count: looks.length, data: looks });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-
-// 🔄 ADD THIS: Get all looks for Admin panel
+// ===============================
+// GET ALL LOOKS
+// ===============================
 const getAllLooks = async (req, res) => {
   try {
-    const looks = await Look.find();
-    res.status(200).json({ success: true, data: looks });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    const looks = await Look.find().sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: looks,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-// 🗑️ ADD THIS: Delete look layout for Admin panel
+// ===============================
+// GET LOOKS BY ROOM
+// ===============================
+const getLooksByRoom = async (req, res) => {
+  try {
+    const looks = await Look.find({
+      roomType: req.params.roomType.toLowerCase(),
+    });
+
+    res.status(200).json({
+      success: true,
+      data: looks,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// ===============================
+// UPDATE LOOK
+// ===============================
+const updateLook = async (req, res) => {
+  try {
+    const { roomType, title, products } = req.body;
+
+    const look = await Look.findById(req.params.id);
+
+    if (!look) {
+      return res.status(404).json({
+        success: false,
+        message: "Look not found",
+      });
+    }
+
+    look.roomType = roomType;
+    look.title = title;
+
+    if (req.files && req.files.mainImg) {
+      look.mainImg = req.files.mainImg[0].path;
+    }
+
+    let parsedProducts = [];
+
+    if (products) {
+      parsedProducts = JSON.parse(products);
+    }
+
+    const updatedProducts = parsedProducts.map((product, index) => {
+      const imageField = req.files
+        ? req.files[`productImages_${index}`]
+        : null;
+
+      return {
+        title: product.title,
+        price: Number(product.price) || 0,
+        productImage: imageField
+          ? imageField[0].path
+          : (
+              look.products[index]
+                ? look.products[index].productImage
+                : ""
+            ),
+      };
+    });
+
+    look.products = updatedProducts;
+
+    await look.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Look updated successfully",
+      data: look,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// ===============================
+// DELETE LOOK
+// ===============================
 const deleteLook = async (req, res) => {
   try {
-    const { id } = req.params;
-    await Look.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: "Look deleted successfully! 🗑️" });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    await Look.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Look deleted successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
-module.exports = { createLook, getLooksByRoom, getAllLooks, deleteLook };
-
-
+module.exports = {
+  createLook,
+  getAllLooks,
+  getLooksByRoom,
+  updateLook,
+  deleteLook,
+};
