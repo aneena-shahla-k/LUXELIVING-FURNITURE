@@ -52,7 +52,10 @@ app.use("/api/payment", paymentRoutes);
 const adminRoutes = require('./routes/admin');
 app.use('/api/admin', adminRoutes);
 
-
+// Root Route
+app.get("/", (req, res) => {
+  res.send("LuxeLiving Backend API is running 🚀");
+});
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
