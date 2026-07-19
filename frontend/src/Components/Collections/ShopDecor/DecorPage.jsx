@@ -1,102 +1,101 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./DecorPage.css";
 import { API } from "../../../api";
 
 const DecorPage = () => {
-  const [decor, setDecor] =
-    useState([]);
+  const [decor, setDecor] = useState([]);
+
   useEffect(() => {
     fetchDecor();
+    window.scrollTo(0, 0);
   }, []);
-  useEffect(() => {
-  window.scrollTo(0, 0);
-}, []); 
 
+  // Handles both Cloudinary and local uploads
+  const getImageUrl = (img) => {
+    if (!img) return "";
 
-  const fetchDecor = async () => {
-    const { data } = await axios.get(API.decor);
+    // Cloudinary image
+    if (img.startsWith("http")) {
+      return img;
+    }
 
-    setDecor(data);
+    // Local upload image
+    return `${process.env.REACT_APP_API_URL}/${img.replace(/^\/+/, "")}`;
   };
 
+  const fetchDecor = async () => {
+    try {
+      const { data } = await axios.get(API.decor);
+
+      // Supports both:
+      // { success:true, data:[...] }
+      // [...]
+      setDecor(data.data || data);
+    } catch (err) {
+      console.error("Error fetching decor:", err);
+    }
+  };
 
   return (
-  <div className="decor-page">
+    <div className="decor-page">
 
-    {/* HEADER */}
-    <div className="decor-header">
-      <h1>Shop the Décor</h1>
+      {/* Header */}
+      <div className="decor-header">
+        <h1>Shop the Décor</h1>
+        <p>Curated accents styled for effortless living</p>
+      </div>
 
-      <p>
-        Curated accents styled for
-        effortless living
-      </p>
-    </div>
+      {/* Cards */}
+      <div className="decor-grid">
 
+        {decor.map((item) => (
+          <div className="decor-card" key={item._id}>
 
-    {/* GRID */}
-    <div className="decor-grid">
+            <div className="decor-image-wrapper">
+              <img
+                src={getImageUrl(item.image)}
+                alt={item.title}
+              />
+            </div>
 
-      {decor.map((item) => (
+            <div className="decor-content">
 
-        <div
-          className="decor-card"
-          key={item._id}
-        >
+              <h2>{item.title}</h2>
 
-          {/* IMAGE */}
-          <div className="decor-image-wrapper">
+              <ul>
+                {item.items?.map((i, index) => (
+                  <li key={index}>{i}</li>
+                ))}
+              </ul>
 
-            <img
-              src={`${process.env.REACT_APP_API_URL}${item.image}`}
-              alt={item.title}
-            />
+              <Link
+                to={`/collection/shop-the-decor/${item.slug}`}
+                className="shop-decor-btn"
+              >
+                Shop This Look
+              </Link>
 
-          </div>
-
-
-          {/* CONTENT */}
-          <div className="decor-content">
-
-                <h2>{item.title}</h2>
-
-                <ul>
-                  {item.items.map(
-                    (i, index) => (
-                      <li key={index}>
-                        {i}
-                      </li>
-                    )
-                  )}
-                </ul>
-
-          <Link to={`/collection/shop-the-decor/${item.slug}`} className="shop-decor-btn">
-            Shop This Look
-          </Link>
+            </div>
 
           </div>
+        ))}
 
-        </div>
+      </div>
 
-      ))}
-
+      {/* Back Button */}
       <div className="collection-button">
-
-      <Link
-        to="/collection"
-        className="back-collection-btn"
-      >
-        ← Back to Collections
-      </Link>
-
-    </div>
+        <Link
+          to="/collection"
+          className="back-collection-btn"
+        >
+          ← Back to Collections
+        </Link>
+      </div>
 
     </div>
-
-  </div>
-);
+  );
 };
 
 export default DecorPage;

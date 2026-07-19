@@ -6,11 +6,16 @@ import { API } from "../../api";
 
 const API_BASE_URL = API.decor;
 
-const formatImageUrl = (pathString) => {
-  if (!pathString) return "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=500";
-  if (pathString.startsWith("http")) return pathString;
-  const cleanPath = pathString.startsWith("/") ? pathString.substring(1) : pathString;
-  return `${process.env.REACT_APP_API_URL}/${cleanPath}`;
+const formatImageUrl = (img) => {
+    if (!img) return "";
+
+    if (img.startsWith("http")) {
+        return img;
+    }
+
+    const clean = img.startsWith("/") ? img.slice(1) : img;
+
+    return `${process.env.REACT_APP_API_URL}/${clean}`;
 };
 
 /* ── shared premium style tokens ── */

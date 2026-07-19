@@ -12,14 +12,19 @@ const AdminLayout = () => {
   const [isManageOpen, setIsManageOpen] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Initial loading window detection to adjust initial state cleanly
   useEffect(() => {
-    if (window.innerWidth <= 768) {
-      setIsSidebarOpen(false);
-    }
+    const checkSize = () => {
+      if (window.innerWidth <= 768) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+    };
+    checkSize();
+    window.addEventListener('resize', checkSize);
+    return () => window.removeEventListener('resize', checkSize);
   }, []);
 
-  // Close menu on mobile path change
   useEffect(() => {
     if (window.innerWidth <= 768) {
       setIsSidebarOpen(false);
@@ -60,14 +65,14 @@ const AdminLayout = () => {
 
         .al{display:flex;min-height:100vh;background:var(--bg);position:relative;}
 
-        /* ── SIDEBAR ── */
+        /* ── SIDEBAR CONTAINER ── */
         .al-sb{
           width:var(--sw);flex-shrink:0;
           background:var(--sidebar);
           border-right:1px solid var(--border);
           display:flex;flex-direction:column;
           position:sticky;top:0;height:100vh;
-          overflow-y:auto;overflow-x:hidden;
+          overflow:hidden;
           transition:width .22s ease, transform .22s ease;
           z-index:100;
         }
@@ -87,10 +92,6 @@ const AdminLayout = () => {
           box-shadow:0 0 18px var(--accent-g);
           position:relative;overflow:hidden;
         }
-        .al-logo-mark::after{
-          content:'';position:absolute;inset:0;
-          background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 60%);
-        }
         .al-logo-mark svg{position:relative;z-index:1;}
         .al-logo-text{overflow:hidden;}
         .al-logo-name{
@@ -101,8 +102,16 @@ const AdminLayout = () => {
         }
         .al-logo-tag{font-size:10px;color:var(--muted);white-space:nowrap;letter-spacing:.06em;margin-top:1px;}
 
-        /* NAV */
-        .al-nav{flex:1;padding:12px 8px;display:flex;flex-direction:column;gap:1px;}
+        /* NAVIGATION SCROLL AREA */
+        .al-nav{
+          flex:1;
+          padding:12px 8px;
+          display:flex;
+          flex-direction:column;
+          gap:1px;
+          overflow-y:auto;
+        }
+        
         .al-nl{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
           color:var(--muted);padding:8px 8px 4px;white-space:nowrap;}
 
@@ -135,8 +144,13 @@ const AdminLayout = () => {
         .al-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);flex-shrink:0;}
         .al-link.on .al-dot{background:var(--accent);}
 
-        /* FOOTER */
-        .al-foot{padding:10px 8px;border-top:1px solid var(--border);}
+        /* DESKTOP ONLY FOOTER styling */
+        .al-foot{
+          padding:12px 8px;
+          border-top:1px solid var(--border);
+          background:var(--sidebar);
+          flex-shrink:0;
+        }
         .al-out{
           display:flex;align-items:center;gap:10px;
           padding:9px 10px;border-radius:9px;
@@ -146,7 +160,12 @@ const AdminLayout = () => {
         }
         .al-out:hover{background:rgba(240,79,114,.1);color:var(--danger);}
 
-        /* ── MAIN ── */
+        /* MOBILE FIXED LINKS BUTTON */
+        .al-mobile-exit-wrapper {
+          display: none;
+        }
+
+        /* ── MAIN LAYOUT VIEW ── */
         .al-main{flex:1;display:flex;flex-direction:column;min-width:0;}
         .al-hdr{
           position:sticky;top:0;z-index:20;
@@ -191,7 +210,6 @@ const AdminLayout = () => {
         }
         .al-body{flex:1;padding:28px;overflow-y:auto;}
 
-        /* MOBILE BACKDROP OVERLAY */
         .al-overlay {
           display: none;
           position: fixed; inset: 0;
@@ -200,7 +218,7 @@ const AdminLayout = () => {
           z-index: 90;
         }
 
-        /* ── DESKTOP COLLAPSED STATE (PURE CSS) ── */
+        /* ── DESKTOP MINIFIED WIDTHS ── */
         @media (min-width: 769px) {
           .al-sb.col { width: var(--sw-c); }
           .al-sb.col .al-logo-text,
@@ -214,7 +232,7 @@ const AdminLayout = () => {
           }
         }
 
-        /* ── RESPONSIVE MOBILE BREAKPOINT ── */
+        /* ── MOBILE MEDIA BREAKPOINTS ── */
         @media (max-width: 768px) {
           .al-sb {
             position: fixed;
@@ -225,9 +243,29 @@ const AdminLayout = () => {
           .al-sb.mobile-open {
             transform: translateX(0);
           }
-          .al-overlay.show {
-            display: block;
+          
+          /* Hide bottom absolute layout completely on mobile viewport */
+          .al-sb .al-foot {
+            display: none !important;
           }
+
+          /* Show alternative top fixed layout wrapper item on mobile menu */
+          .al-mobile-exit-wrapper {
+            display: block;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 4px;
+          }
+          
+          .al-sb.mobile-open .al-logo-text,
+          .al-sb.mobile-open .al-nl,
+          .al-sb.mobile-open .al-link span,
+          .al-sb.mobile-open .al-drop-hd span,
+          .al-sb.mobile-open .al-out span {
+            display: inline-block !important;
+          }
+          
+          .al-overlay.show { display: block; }
           .al-hdr { padding: 0 16px; }
           .al-body { padding: 16px; }
           .al-crumb { display: none; }
@@ -235,7 +273,6 @@ const AdminLayout = () => {
       `}</style>
 
       <div className="al">
-        {/* MOBILE OVERLAY */}
         <div 
           className={`al-overlay ${isSidebarOpen ? 'show' : ''}`} 
           onClick={() => setIsSidebarOpen(false)} 
@@ -243,8 +280,6 @@ const AdminLayout = () => {
 
         {/* SIDEBAR */}
         <aside className={`al-sb ${isSidebarOpen ? 'mobile-open' : 'col'}`}>
-
-          {/* LOGO */}
           <div className="al-logo">
             <div className="al-logo-mark">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -258,8 +293,15 @@ const AdminLayout = () => {
             </div>
           </div>
 
-          {/* NAVIGATION */}
           <nav className="al-nav">
+            {/* FIXED ON MOBILE: Directly below logo, easily reachable */}
+            <div className="al-mobile-exit-wrapper">
+              <a href="/" className="al-out">
+                <span className="al-link-icon"><LogOut size={16} style={{ color: 'var(--danger)' }}/></span>
+                <span style={{ color: 'var(--danger)' }}>Exit to Website</span>
+              </a>
+            </div>
+
             <div className="al-nl">Overview</div>
             <Link to="/admin" className={`al-link ${isActive('/admin') ? 'on' : ''}`}>
               <span className="al-link-icon"><LayoutDashboard size={16} /></span>
@@ -274,6 +316,7 @@ const AdminLayout = () => {
               </div>
               {isManageOpen ? <ChevronUp size={13}/> : <ChevronDown size={13}/>}
             </div>
+            
             {isManageOpen && (
               <div className="al-subs">
                 {subNav.map((s, i) => (
@@ -298,7 +341,7 @@ const AdminLayout = () => {
             </Link>
           </nav>
 
-          {/* FOOTER - EXIT BUTTON */}
+          {/* DESKTOP FOOTER */}
           <div className="al-foot">
             <a href="/" className="al-out">
               <span className="al-link-icon"><LogOut size={16}/></span>
@@ -307,12 +350,12 @@ const AdminLayout = () => {
           </div>
         </aside>
 
-        {/* MAIN BODY */}
+        {/* MAIN ROUTE CONTENT CONTAINER */}
         <div className="al-main">
           <header className="al-hdr">
             <div className="al-hdr-l">
               <button className="al-toggle" onClick={() => setIsSidebarOpen(prev => !prev)}>
-                {isSidebarOpen && window.innerWidth <= 768 ? <X size={16} /> : <Menu size={16} />}
+                {isSidebarOpen ? <X size={16} /> : <Menu size={16} />}
               </button>
               <div className="al-crumb" style={{ marginLeft: 12 }}>Admin <span>/ Dashboard</span></div>
             </div>

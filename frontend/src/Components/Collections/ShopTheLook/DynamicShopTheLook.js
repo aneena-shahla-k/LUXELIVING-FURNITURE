@@ -12,6 +12,16 @@ const DynamicShopTheLook = () => {
   const [selectedProducts, setSelectedProducts] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const getImageUrl = (img) => {
+  if (!img) return "";
+
+  if (img.startsWith("http")) {
+    return img;
+  }
+
+  return `${process.env.REACT_APP_API_URL}/${img}`;
+};
+
   useEffect(() => {
     const fetchLookbook = async () => {
       try {
@@ -122,7 +132,7 @@ const handleAddSelectedToCart = async (lookProducts) => {
             
             <div style={{ width: '100%', maxHeight: '480px', borderRadius: '16px', overflow: 'hidden', marginBottom: '50px', marginTop: '100px',backgroundColor: '#fcfcfc' }}>
               <img 
-                src={`${process.env.REACT_APP_API_URL}${look.mainImg}`} 
+                src={getImageUrl(look.mainImg)} 
                 alt={look.title} 
                 style={{ width: '100%', height: 'auto', maxHeight: '480px', objectFit: 'cover' }}
               />
@@ -182,7 +192,7 @@ const handleAddSelectedToCart = async (lookProducts) => {
                     {prod.productImage && (
                       <div style={{ width: '100%', height: '150px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px', overflow: 'hidden' }}>
                         <img 
-                          src={`${process.env.REACT_APP_API_URL}${prod.productImage}`} 
+                          src={getImageUrl(prod.productImage)} 
                           alt={prod.title} 
                           style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                         />

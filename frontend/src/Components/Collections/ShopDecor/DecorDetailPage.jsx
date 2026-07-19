@@ -140,9 +140,14 @@ const handleAddToCart = async () => {
       <div className="shop-container">
 
         <div className="image-section">
-          <img src={`${process.env.REACT_APP_API_URL}${detail.mainImage}`}
-            alt=""
-            className="main-image" />
+        <img
+            src={
+              detail.mainImage.startsWith("http")
+                ? detail.mainImage
+                : `${process.env.REACT_APP_API_URL}${detail.mainImage}`
+            }
+            alt={detail.title}
+          />
         </div>
         {/* RIGHT */}
         <div className="look-panel">
@@ -166,7 +171,14 @@ const handleAddToCart = async () => {
                       }
                     />
 
-                    <img src={`${process.env.REACT_APP_API_URL}${item.image}`} alt="" />
+                    <img
+                      src={
+                        item.image.startsWith("http")
+                          ? item.image
+                          : `${process.env.REACT_APP_API_URL}${item.image}`
+                      }
+                      alt={item.name}
+                    />
                     <p>{item.name}</p>
 
                   </div>
