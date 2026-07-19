@@ -81,11 +81,7 @@ const DecorPage = () => {
 
           </div>
         ))}
-
-      </div>
-
-      {/* Back Button */}
-      <div className="collection-button">
+        <div className="collection-button">
         <Link
           to="/collection"
           className="back-collection-btn"
@@ -93,6 +89,11 @@ const DecorPage = () => {
           ← Back to Collections
         </Link>
       </div>
+
+      </div>
+
+      {/* Back Button */}
+      
 
     </div>
   );

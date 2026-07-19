@@ -139,16 +139,18 @@ const handleAddToCart = async () => {
 
       <div className="shop-container">
 
-        <div className="image-section">
+      <div className="image-section">
         <img
-            src={
-              detail.mainImage.startsWith("http")
-                ? detail.mainImage
-                : `${process.env.REACT_APP_API_URL}${detail.mainImage}`
-            }
-            alt={detail.title}
-          />
-        </div>
+          className="main-image"  /* <-- Ee class name ivide add cheyyuka */
+          src={
+            detail.mainImage.startsWith("http")
+              ? detail.mainImage
+              : `${process.env.REACT_APP_API_URL}${detail.mainImage}`
+          }
+          alt={detail.title}
+        />
+      </div>
+
         {/* RIGHT */}
         <div className="look-panel">
          <h2>Shop This Look</h2>
